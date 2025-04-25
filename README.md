@@ -138,3 +138,35 @@ row_means <- apply(iris_array, c(1, 3), mean)
 print("Row-wise Means:")
 print(row_means)
 
+<h1>3 Implement Linear Regression Algorithms</h1>
+
+THEORY:
+Linear regression is a statistical method used to model the relationship between a dependent
+variable (target) and one or more independent variables (predictors). The goal is to find the
+linear equation that best predicts the dependent variable based on the independent variables.
+
+ CODE :-
+install.packages(“caret”)
+library(tidyverse)
+library(caret)
+url <- "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/mpg.csv"
+data <- read.csv(url)
+write.csv(data, "mpg_data.csv", row.names = FALSE)
+head(data)
+str(data)
+summary(data)
+data <- na.omit(data)
+data <- data %>% select(mpg, horsepower, weight)
+model <- lm(mpg ~ horsepower + weight, data = data)
+summary(model)
+cat("R-squared:", summary(model)$r.squared, "\n")
+par(mfrow = c(2, 2))
+plot(model)
+new_data <- data.frame(horsepower = c(100, 150), weight = c(3000, 3500))
+predictions <- predict(model, new_data)
+print(predictions)
+saveRDS(model, "linear_model.rds")
+loaded_model <- readRDS("linear_model.rds")
+new_predictions <- predict(loaded_model, new_data)
+print(new_predictions)
+
